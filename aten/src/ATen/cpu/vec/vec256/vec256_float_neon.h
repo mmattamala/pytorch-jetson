@@ -26,6 +26,9 @@ namespace {
 // Most likely we will do aarch32 support with inline asm.
 #if defined(__aarch64__)
 
+// See https://github.com/pytorch/pytorch/issues/47098
+#if defined(__clang__) || (__GNUC__ > 8 || (__GNUC__ == 8 && __GNUC_MINOR__ > 3))
+
 #ifdef __BIG_ENDIAN__
 #error "Big endian is not supported."
 #endif
@@ -713,6 +716,7 @@ Vectorized<float> inline fmadd(const Vectorized<float>& a, const Vectorized<floa
   return Vectorized<float>(r0, r1);
 }
 
+#endif /* defined(__clang__) || (__GNUC__ > 8 || (__GNUC__ == 8 && __GNUC_MINOR__ > 3)) */
 #endif /* defined(aarch64) */
 
 }}}
